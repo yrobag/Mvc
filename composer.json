@@ -1,0 +1,17 @@
+{
+    "name": "yrobag/mvc",
+    "description": "Just learning how freamworks works",
+    "authors": [
+        {
+            "name": "jakub",
+            "email": "gaboryjakub@gmail.com"
+        }
+    ],
+
+    "autoload": {
+        "psr-4": {"Mvc\\": "Code/"}
+    },
+
+    "require": {}
+
+}
