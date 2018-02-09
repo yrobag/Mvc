@@ -13,7 +13,8 @@ class Helper
     public function getPath()
     {
         $requestUri = $this->getRequestUri();
-        return mb_substr($requestUri, 1, mb_strpos($requestUri, '?')-1);
+        $end =  (mb_strpos($requestUri, '?') !== false)  ? mb_strpos($requestUri, '?')-1 : null;
+        return mb_substr($requestUri, 1, $end);
 
     }
 
@@ -35,9 +36,14 @@ class Helper
         return $paramsArray;
     }
 
-
     public function getRequestUri()
     {
         return $_SERVER['REQUEST_URI'];
+    }
+
+
+    public function validateControllerClass($class)
+    {
+        return class_exists($class) && method_exists($class, 'action');
     }
 }
