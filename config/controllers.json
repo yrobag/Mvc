@@ -1,0 +1,10 @@
+{
+  "index/index": {
+    "view": "index",
+    "template": "homepage/index.phtml"
+  },
+  "about/about": {
+    "view": "index",
+    "template": "about.phtml"
+  }
+}

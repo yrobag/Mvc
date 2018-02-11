@@ -5,6 +5,10 @@ namespace Mvc\Core\Routing;
 class Helper
 {
 
+    const VIEWS_NAMESPACE = 'Mvc\\App\\Views\\';
+    const CONTROLLERS_NAMESPACE = 'Mvc\\App\\Controllers\\';
+
+
     public function getPathTree()
     {
         return explode('/', $this->getPath());
@@ -45,5 +49,22 @@ class Helper
     public function validateControllerClass($class)
     {
         return class_exists($class) && method_exists($class, 'action');
+    }
+
+    public function getConfig()
+    {
+        $rawConfig = file_get_contents(__DIR__ . '/../../../config/controllers.json');
+        return json_decode($rawConfig);
+    }
+
+    public function getControllerAlias($controller)
+    {
+        $controllerPath = explode('\\', get_class($controller));
+        if(!isset($controllerPath[3]) || !isset($controllerPath[4]))
+        {
+            return '';
+        }
+
+        return strtolower($controllerPath[3]) .'/'.strtolower($controllerPath[4]);
     }
 }

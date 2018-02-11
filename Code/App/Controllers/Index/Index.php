@@ -2,11 +2,13 @@
 
 namespace Mvc\App\Controllers\Index;
 
+use Mvc\Core\Routing\Controller\ControllerAbstract;
 
-class Index
+
+class Index extends ControllerAbstract
 {
     public function action()
     {
-        var_dump('You are in Homepage');die;
+        $this->renderView();
     }
 }

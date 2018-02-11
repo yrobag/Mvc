@@ -2,11 +2,13 @@
 
 namespace Mvc\App\Controllers\About;
 
-class About
+use Mvc\Core\Routing\Controller\ControllerAbstract;
+
+
+class About extends ControllerAbstract
 {
     public function action()
     {
-        var_dump('You are in About');die;
-
+        $this->renderView();
     }
 }
