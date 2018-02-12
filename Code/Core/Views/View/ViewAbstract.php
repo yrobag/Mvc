@@ -11,6 +11,8 @@ abstract class ViewAbstract
 
     protected $template;
 
+    protected $static;
+
     public function __construct()
     {
         $this->viewsHelper = new Helper();
@@ -23,9 +25,17 @@ abstract class ViewAbstract
         return $this;
     }
 
+    public function setStatic($static)
+    {
+        $this->static = $static;
+
+        return $this;
+    }
+
     public function render()
     {
         $templateFile = $this->viewsHelper->getTemplateFile($this->template);
+
 
         if (!(file_exists($templateFile) && is_file($templateFile))) {
             throw new \Exception('Wrong template file!');

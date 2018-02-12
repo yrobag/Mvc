@@ -8,6 +8,8 @@ class Helper
     const VIEWS_NAMESPACE = 'Mvc\\App\\Views\\';
     const CONTROLLERS_NAMESPACE = 'Mvc\\App\\Controllers\\';
 
+    protected $config;
+
 
     public function getPathTree()
     {
@@ -53,8 +55,12 @@ class Helper
 
     public function getConfig()
     {
-        $rawConfig = file_get_contents(__DIR__ . '/../../../config/controllers.json');
-        return json_decode($rawConfig);
+        if(!$this->config){
+            $rawConfig = file_get_contents(__DIR__ . '/../../../config/controllers.json');
+            $this->config = json_decode($rawConfig);
+        }
+        return $this->config;
+
     }
 
     public function getControllerAlias($controller)

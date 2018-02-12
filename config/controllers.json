@@ -1,10 +1,23 @@
 {
+  "defaults": {
+    "header": "defaults/header.phtml",
+    "footer": "defaults/footer.phtml",
+    "css": ["main.css"],
+    "js": ["main.js"]
+  },
   "index/index": {
     "view": "index",
-    "template": "homepage/index.phtml"
+    "template": "homepage/index.phtml",
+    "css": ["homepage.css", "homepage2.css"],
+    "js": ["homepage.js"]
   },
   "about/about": {
     "view": "index",
     "template": "about.phtml"
+  },
+  "about/index": {
+    "view": "index",
+    "template": "about.phtml",
+    "defaults": false
   }
 }

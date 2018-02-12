@@ -6,5 +6,5 @@ $app = new Mvc\Core\App();
 try{
     $app->run();
 }catch (Exception $exception) {
-    var_dump($exception->getMessage());die;
+    echo $exception->getMessage();
 }
