@@ -6,17 +6,17 @@
     "js": ["main.js"]
   },
   "index/index": {
-    "view": "index",
+    "view": "view",
     "template": "homepage/index.phtml",
     "css": ["homepage.css", "homepage2.css"],
     "js": ["homepage.js"]
   },
   "about/about": {
-    "view": "index",
+    "view": "about/about",
     "template": "about.phtml"
   },
   "about/index": {
-    "view": "index",
+    "view": "view",
     "template": "about.phtml",
     "defaults": false
   }

@@ -36,27 +36,55 @@ abstract class ControllerAbstract
                $this->view->setTemplate($config->{$controllerAlias}->template);
                $static = $this->getStatic($controllerAlias);
                $useDefault = $this->checkIfUseDefaults($controllerAlias);
-               if($useDefault){
+                if($useDefault){
                    $defaultStatic = $this->getStatic();
-                   $static = array_merge($static,$defaultStatic);
+
+                   $static = [
+                       'js' => array_merge($static['js'], $defaultStatic['js']),
+                       'css'=> array_merge($static['css'], $defaultStatic['css'])
+                   ];
                }
                $this->view->setStatic($static);
+
+               $customHeader = $this->getCustom($controllerAlias, 'header');
+               $customFooter = $this->getCustom($controllerAlias, 'footer');
+
+               $header = ($useDefault && !$customHeader) ? $config->defaults->header : $customHeader;
+               $footer = ($useDefault && !$customFooter) ? $config->defaults->footer : $customFooter;
+
+               $this->view->setHeader($header);
+               $this->view->setFooter($footer);
             }
         }
     }
 
     protected function setView($viewName)
     {
-        $viewClass = $this->controllersHelper::VIEWS_NAMESPACE . ucfirst(strtolower($viewName));
+        $namespacePath = [];
+        foreach (explode('/',$viewName) as $value) {
+            $namespacePath[] = ucfirst(strtolower($value));
+        }
+        $className = implode('\\', $namespacePath);
+        $viewClass = $this->controllersHelper::VIEWS_NAMESPACE . $className;
         $this->view = new $viewClass();
 
         return $this;
     }
 
+    protected function getCustom($controllerAlias, $property)
+    {
+        $config = $this->controllersHelper->getConfig();
+        if(property_exists($config->{$controllerAlias}, $property)){
+            return $config->{$controllerAlias}->{$property};
+        }
+
+        return false;
+    }
+
     protected function checkIfUseDefaults($controllerAlias)
     {
         $config = $this->controllersHelper->getConfig();
-        return property_exists($config->{$controllerAlias}, 'defaults') && $config->{$controllerAlias}->defaults === false;
+        return !property_exists($config->{$controllerAlias}, 'defaults') || !$config->{$controllerAlias}->defaults === false;
     }
 
     protected function getStatic($controllerAlias = 'defaults')
@@ -67,10 +95,9 @@ abstract class ControllerAbstract
             $css = $config->{$controllerAlias}->css;
         }
         $js = [];
-        if(property_exists($config->{$controllerAlias}, 'css') && is_array($config->{$controllerAlias}->css)){
+        if(property_exists($config->{$controllerAlias}, 'js') && is_array($config->{$controllerAlias}->css)){
             $js = $config->{$controllerAlias}->js;
         }
-
 
         return [
             'css' => $css,

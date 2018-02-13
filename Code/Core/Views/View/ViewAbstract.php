@@ -9,6 +9,10 @@ abstract class ViewAbstract
 {
     protected $viewsHelper;
 
+    protected $header;
+
+    protected $footer;
+
     protected $template;
 
     protected $static;
@@ -16,6 +20,23 @@ abstract class ViewAbstract
     public function __construct()
     {
         $this->viewsHelper = new Helper();
+    }
+
+
+    public function render()
+    {
+        $templateFile = $this->viewsHelper->getTemplateFile($this->template);
+
+        if($templateFile){
+            $this->initHtml();
+            $this->renderHead();
+            $this->initBody();
+            $this->renderHeader();
+            include $templateFile;
+            $this->renderFooter();
+            $this->endHtml();
+        }
+
     }
 
     public function setTemplate($template)
@@ -32,16 +53,70 @@ abstract class ViewAbstract
         return $this;
     }
 
-    public function render()
+
+    public function setHeader($header)
     {
-        $templateFile = $this->viewsHelper->getTemplateFile($this->template);
+        $this->header = $header;
+
+        return $this;
+    }
+
+    public function setFooter($footer)
+    {
+        $this->footer = $footer;
+
+        return $this;
+    }
+
+    public function getStatic()
+    {
+        return $this->static;
+    }
 
 
-        if (!(file_exists($templateFile) && is_file($templateFile))) {
-            throw new \Exception('Wrong template file!');
+    private function renderHead()
+    {
+        $static = $this->getStatic();
+        $css = '';
+        foreach ($static['css'] as $cssFile){
+            $css .= '<link rel="stylesheet" type="text/css" href="/public/css/'.$cssFile.'">';
         }
+        $js = '';
+        foreach ($static['js'] as $jsFile){
+            $js .= '<script src="/public/js/'.$jsFile.'"></script>';
+        }
+        echo "<head> $css $js </head>";
+    }
 
-        include $templateFile;
+    private function renderHeader()
+    {
+        $templateFile = $this->viewsHelper->getTemplateFile($this->header);
+        if($templateFile){
+            include $templateFile;
+        }
+    }
+
+    private function renderFooter()
+    {
+        $templateFile = $this->viewsHelper->getTemplateFile($this->footer);
+
+        if($templateFile){
+            include $templateFile;
+        }
+    }
+
+
+    private function initHtml()
+    {
+        echo '<!doctype html><html>';
+    }
+    private function initBody()
+    {
+        echo '<body>';
+    }
+    private function endHtml()
+    {
+        echo '</body></html>';
     }
 
 
